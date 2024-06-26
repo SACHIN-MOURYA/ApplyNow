@@ -7,6 +7,7 @@ import jobRouter from "./routes/jobRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import applicationRouter from "./routes/applicationRoutes.js";
 import { dbConnection } from "./database/dbConnection.js";
+import { errorMiddleware } from "./middlewares/error.js";
 const app = express()
 
 
@@ -36,6 +37,6 @@ app.use(
 
   dbConnection();
 
-
+  app.use(errorMiddleware);
 
 export default app
