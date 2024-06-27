@@ -12,7 +12,7 @@ export const register = catchAsyncErrors(async (req, res, next) => {
   if (isEmail) {
     return next(new ErrorHandler("Email already registered!"));
   }
-  const user = await User.create({
+  const user = await User.create({  
     name,
     email,
     phone,
