@@ -11,7 +11,9 @@ import { errorMiddleware } from "./middlewares/error.js";
 const app = express()
 
 
-dotenv.config({path: "./.env"})
+dotenv.config({
+  path: './.env'
+})
 
 
 app.use(
