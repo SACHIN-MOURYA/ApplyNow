@@ -1,8 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, CSSProperties } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../main";
+import ClipLoader from "react-spinners/ClipLoader";
+
 const PostJob = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -14,11 +16,14 @@ const PostJob = () => {
   const [salaryTo, setSalaryTo] = useState("");
   const [fixedSalary, setFixedSalary] = useState("");
   const [salaryType, setSalaryType] = useState("default");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { isAuthorized, user } = useContext(Context);
 
   const handleJobPost = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
+
     if (salaryType === "Fixed Salary") {
       setSalaryFrom("");
       setSalaryFrom("");
@@ -61,10 +66,20 @@ const PostJob = () => {
       )
       .then((res) => {
         toast.success(res.data.message);
+        setTitle("");
+        setDescription("");
+        setCategory("");
+        setCountry("");
+        setCity("");
+        setLocation("");
+        setSalaryFrom("");
+        setSalaryTo("");
+        setIsLoading(false);
       })
       .catch((err) => {
         toast.error(err.response.data.message);
       });
+    setIsLoading(false);
   };
 
   const navigateTo = useNavigate();
@@ -177,7 +192,26 @@ const PostJob = () => {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Job Description"
             />
-            <button type="submit">Create Job</button>
+            {!isLoading ? (
+              <button type="submit" disabled={isLoading}>
+                Create Job
+              </button>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <ClipLoader
+                  color="blue"
+                  loading={true}
+                  size={50}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
+              </div>
+            )}
           </form>
         </div>
       </div>
